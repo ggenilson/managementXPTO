@@ -1,1 +1,1 @@
-char sms[100] = "Pretende escolher outra opção?";
+char sms[30] = "Pretende escolher outra opção?";
