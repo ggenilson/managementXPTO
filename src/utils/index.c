@@ -92,17 +92,14 @@ char * substring (char str[], int start, int end) {
 
 //Função que traz o último ID em um ficheiro
 int getNewID (char str[], FILE *fileReader) {
-	int i, j, counter = 0, id = 0;
-	char aux[200];
+	int id = 0;
 	
 	while (fgets(str, 200, fileReader)) {
-		counter = 0;
-
 		char * found = strchr(str, '#');
 		int index = found ? found - str : -1;
 		
-		char * aux1 = substring(str, 0, index);
-		id = atoi(aux1);
+		char * aux = substring(str, 0, index);
+		id = atoi(aux);
 	}
 	
 	return id + 1;
