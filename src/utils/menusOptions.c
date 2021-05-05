@@ -15,7 +15,7 @@ char * initialOptions[] = {
 char * crudOptions[] = {
 	"Inserir",
 	"Alterar",
-	"Apagar",
+	"Eliminar",
 	"Listar",
 	"Pesquisar",
 	"Voltar"

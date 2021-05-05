@@ -102,3 +102,22 @@ int getNewID (char str[], FILE *fileReader) {
 	
 	return id + 1;
 }
+
+char getAnswerColor(int res, char * s1, char * s2) {
+	char ans;
+	
+	if (res) {
+		textcolor(BLUE);
+		printf("\n%s\n", s1);
+	} else {
+		textcolor(RED);
+		printf("\n%s\n", s2);
+	}
+	
+	textcolor(GREEN);
+	
+	printf("\nAinda pretende 'ELIMINAR'?\n(s/n)\n");
+	scanf(" %c", &ans);
+	
+	return ans;
+}

@@ -12,11 +12,10 @@
 #include "./src/utils/menusOptions.c"
 
 //Importando Funções de Company TYpe
+#include "./src/forms/companyType/index.c"
 #include "./src/forms/companyType/store.c"
 #include "./src/forms/companyType/delete.c"
 //
-
-
 
 int main() {
 	setlocale(LC_ALL, "Portuguese");
@@ -80,23 +79,31 @@ int main() {
 								
 								res = CTStore();
 								
-								if (res) {
-									textcolor(BLUE);
-									printf("\nTipo de empresa 'INSERIDA' com sucesso!\n");
-								} else {
-									textcolor(RED);
-									printf("\nErro inesperado!\nSugestão: Verifique o caminho do ficheiro!\n");
-								}
-								
-								textcolor(GREEN);
-								
-								printf("\nAinda pretende 'INSERIR'?\n(s/n)\n");
-								scanf(" %c", &ans);
+								ans = getAnswerColor(res, storeCompany, errStore);
 							} while(ans == 's' || ans == 'S');
 							
 							system("cls");
 						} else if (crudOption == 3) {
-							del(2);
+							do {
+								getAll(option, crudOption, 1);
+								
+								res = del();
+								
+								ans = getAnswerColor(res, deleteCompany, notFoundCompany);
+							} while(ans == 's' || ans == 'S');
+							
+							system("cls");
+						} else if (crudOption == 4) {
+							getAll(option, crudOption, 1);
+								
+							res = getCompanyTypes();
+						/*	do {
+								
+								
+								ans = getAnswerColor(res, deleteCompany, notFoundCompany);
+							} while(ans == 's' || ans == 'S');*/
+							
+							system("cls");
 						}
 					}
 				}
