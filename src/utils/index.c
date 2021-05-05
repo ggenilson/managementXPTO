@@ -65,50 +65,45 @@ int sizeOfString (char string[]) {
 	return counter + 1;
 }
 
+//Função para pegar substring
+char * substring (char str[], int start, int end) {
+    int i, j;
+    char * sub; 
+     
+    // Verifica valores incompatíveis e 
+    // retorna NULL
+    if(start >= end || end > strlen(str)) {
+        return NULL;
+    }
+     
+    // Aloca memória para a substring
+    sub = (char *) malloc(sizeof(char) * (end - start + 1));
+     
+    // Copia a substring para a variável
+    for(i = start, j = 0; i < end; i++, j++) {
+        sub[j] = str[i];
+    }
+     
+    // Terminador de string
+    //sub[j] = '&#092;&#048;';
+     
+    return sub;
+}
+
 //Função que traz o último ID em um ficheiro
 int getNewID (char str[], FILE *fileReader) {
 	int i, j, counter = 0, id = 0;
 	char aux[200];
 	
-	printf("-------------------------------------------------\n");
-	
 	while (fgets(str, 200, fileReader)) {
-		printf("%s\n", str);
 		counter = 0;
+
+		char * found = strchr(str, '#');
+		int index = found ? found - str : -1;
 		
-		
-		//Percorrendo cada linha do arquivo
-		for (i = 0; i < sizeOfString(str); i++) {
-			aux[counter] = str[i];
-			counter++;
-			
-			char aux1[counter - 1];
-			
-			if (str[i] == '#') {
-				printf("Texto a percorrer: %s\n", aux);
-				for (j = 0; j < counter; j++) {
-					if (aux[j] == '#') {
-						break;
-					}
-					
-					printf("%c - ", aux[j]);
-					aux1[j] = aux[j];
-				}
-				
-				printf("\nString: %s\n", aux1);
-				
-				id = (int)aux1;
-				
-				printf("\nNumero: %d\n", id);
-				
-				break;
-			}
-		}
+		char * aux1 = substring(str, 0, index);
+		id = atoi(aux1);
 	}
-	
-	printf("\n ---  %d --- \n", &counter);
-	
-	printf("-------------------------------------------------\n");
 	
 	return id + 1;
 }

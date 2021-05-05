@@ -1,4 +1,6 @@
 int CTStore () {	
+	setbuf(stdin, NULL);
+	
     struct company {
     	int id;
         char type[100];
@@ -9,8 +11,8 @@ int CTStore () {
     
     FILE *file, *fileReader;
     
-    file = fopen("C:\\Genilson\\Projects\\XPTOManagement\\src\\archives\\companyType.txt" , "a");
-    fileReader = fopen("C:\\Genilson\\Projects\\XPTOManagement\\src\\archives\\companyType.txt", "r");
+    file = fopen(pathCompanyType, "a");
+    fileReader = fopen(pathCompanyType, "r");
     
     if (!file || !fileReader) {
     	printf("Arquivo não pode ser aberto!\n");
@@ -20,7 +22,7 @@ int CTStore () {
 	
 	char str[200];
 	int counter;
-	//cn.id = getNewID(str, fileReader);
+	cn.id = getNewID(str, fileReader);
     
     fprintf(file, "%d#%s\n", cn.id, cn.type);
     fclose(file);

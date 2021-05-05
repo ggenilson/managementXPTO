@@ -5,6 +5,7 @@
 #include <locale.h>
 #include <windows.h>
 #include "./src/utils/sms.c"
+#include "./src/utils/paths.c"
 #include "./src/utils/index.c"
 #include "./src/utils/consts.c"
 #include "./src/forms/components.c"
@@ -69,8 +70,6 @@ int main() {
 							//Área para alocação do formulário para cadastro do Tipo de Empresa
 							do {
 								getAll(option, crudOption, 1);
-
-								gets(help);
 								
 								res = CTStore();
 								
