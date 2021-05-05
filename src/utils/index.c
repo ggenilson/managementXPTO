@@ -84,21 +84,19 @@ char * substring (char str[], int start, int end) {
         sub[j] = str[i];
     }
      
-    // Terminador de string
-    //sub[j] = '&#092;&#048;';
-     
     return sub;
 }
 
 //Função que traz o último ID em um ficheiro
 int getNewID (char str[], FILE *fileReader) {
-	int id = 0;
+	int id = 0, index;
+	char * aux, * found;
 	
 	while (fgets(str, 200, fileReader)) {
-		char * found = strchr(str, '#');
-		int index = found ? found - str : -1;
+		found = strchr(str, '#');
+		index = found ? found - str : -1;
 		
-		char * aux = substring(str, 0, index);
+		aux = substring(str, 0, index);
 		id = atoi(aux);
 	}
 	

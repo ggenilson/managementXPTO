@@ -9,12 +9,18 @@
 #include "./src/utils/index.c"
 #include "./src/utils/consts.c"
 #include "./src/forms/components.c"
-#include "./src/forms/companyType/store.c"
 #include "./src/utils/menusOptions.c"
+
+//Importando Funções de Company TYpe
+#include "./src/forms/companyType/store.c"
+#include "./src/forms/companyType/delete.c"
+//
+
+
 
 int main() {
 	setlocale(LC_ALL, "Portuguese");
-	fullScreen();
+	//fullScreen();
 	system("color 70");
 		
 	textcolor(GREEN);
@@ -65,6 +71,7 @@ int main() {
 					} else if (option == 2) {
 						Components();
 					} else if (option == 9) {
+						//Lidando com o Tipo Empresa
 						if (crudOption == 1) {
 							//*****************************************************************
 							//Área para alocação do formulário para cadastro do Tipo de Empresa
@@ -88,6 +95,8 @@ int main() {
 							} while(ans == 's' || ans == 'S');
 							
 							system("cls");
+						} else if (crudOption == 3) {
+							del(2);
 						}
 					}
 				}
