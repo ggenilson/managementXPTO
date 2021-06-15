@@ -1,14 +1,26 @@
-int CTdel () {
-	int id, ret = 0;
+int CTupdate () {
+	setbuf(stdin, NULL);
+	fflush(stdin);
 	
-	printf("Especifique o código da Empresa, para assim eliminar:\n");
+	int id, ret = 0;
+	char newCompany[100];
+	
+	printf("Especifique o código da Empresa, para assim editar:\n");
 	scanf("%d", &id);
+	
+	setbuf(stdin, NULL);
+	
+	printf("Escreva o novo nome da Empresa:\n");
+	gets(newCompany);
+	
+	setbuf(stdin, NULL);
+	fflush(stdin);
 	
 	//Arquivo de entrada
 	FILE *input = fopen(pathCompanyType, "r");
 	
 	//Arquivo de saída
-    FILE *output = fopen("helpful.txt", "w+");
+    FILE *output = fopen("helpful.txt", "w");
     
     if (!input || !output) {
     	return 5;
@@ -30,6 +42,7 @@ int CTdel () {
         if(id != idCompare) {
             fputs(lineText, output);
         } else {
+        	fprintf(output, "%d#%s\n", idCompare, newCompany);
         	ret = 1;
 		}
         

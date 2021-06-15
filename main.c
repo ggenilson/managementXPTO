@@ -1,9 +1,12 @@
+//Importando todas bibliotecas necessárias para o funcionamento da Aplicação
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
 #include <windows.h>
+
+//Importando Funções de funcionamento geral
 #include "./src/utils/sms.c"
 #include "./src/utils/paths.c"
 #include "./src/utils/index.c"
@@ -11,11 +14,11 @@
 #include "./src/forms/components.c"
 #include "./src/utils/menusOptions.c"
 
-//Importando Funções de Company TYpe
+//Importando Funções de Company Type
 #include "./src/forms/companyType/index.c"
 #include "./src/forms/companyType/store.c"
 #include "./src/forms/companyType/delete.c"
-//
+#include "./src/forms/companyType/update.cpp"
 
 int main() {
 	setlocale(LC_ALL, "Portuguese");
@@ -24,7 +27,7 @@ int main() {
 		
 	textcolor(GREEN);
 	
-	//Variáveis responsáveis por receber os valores das oplicações
+	//Variáveis responsáveis por receber os valores das aplicações
 	int option, crudOption;
 	
 	//Variáveis controladoras dos ciclos
@@ -83,11 +86,21 @@ int main() {
 							} while(ans == 's' || ans == 'S');
 							
 							system("cls");
+						} else if (crudOption == 2) {
+							do {
+								getAll(option, crudOption, 1);
+								
+								res = CTupdate();
+								
+								ans = getAnswerColor(res, updateCompany, notFoundCompany);
+							} while(ans == 's' || ans == 'S');
+							
+							system("cls");
 						} else if (crudOption == 3) {
 							do {
 								getAll(option, crudOption, 1);
 								
-								res = del();
+								res = CTdel();
 								
 								ans = getAnswerColor(res, deleteCompany, notFoundCompany);
 							} while(ans == 's' || ans == 'S');
@@ -96,12 +109,7 @@ int main() {
 						} else if (crudOption == 4) {
 							getAll(option, crudOption, 1);
 								
-							res = getCompanyTypes();
-						/*	do {
-								
-								
-								ans = getAnswerColor(res, deleteCompany, notFoundCompany);
-							} while(ans == 's' || ans == 'S');*/
+							res = CTgetCompanyTypes();
 							
 							system("cls");
 						}

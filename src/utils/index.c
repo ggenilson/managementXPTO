@@ -11,7 +11,6 @@ void exitApplication () {
 	}
 }
 
-
 //Função responsável por enviar uma sms para o usuário e retornar a resposta
 int getAnswer (char sms[]) {
 	char ans;
@@ -44,7 +43,6 @@ int getQuestion (int number) {
 		}
 	}
 }
-
 
 //Funcão responsável por colocar tela cheia
 void fullScreen () {
@@ -87,7 +85,7 @@ char * substring (char str[], int start, int end) {
     return sub;
 }
 
-//Função que traz o último ID em um ficheiro
+//Função que retorna o último ID em um ficheiro
 int getNewID (char str[], FILE *fileReader) {
 	int id = 0, index;
 	char * aux, * found;
@@ -116,8 +114,63 @@ char getAnswerColor(int res, char * s1, char * s2) {
 	
 	textcolor(GREEN);
 	
-	printf("\nAinda pretende 'ELIMINAR'?\n(s/n)\n");
+	printf("\nPretende fazer mais uma vez?\n(s/n)\n");
 	scanf(" %c", &ans);
 	
 	return ans;
+}
+
+int getEntity (char *fields[], FILE *fileReader, int fieldSize) {
+	char * sub;
+	int i, cont = 0;
+	
+	//Arquivo de entrada
+	FILE *input = fopen(pathCompanyType, "r");
+    
+    if (!input) {
+    	return 0;
+	}
+    
+    //Uma string larga o suficiente para extrair o texto total de cada linha
+    char lineText[1001] = "";
+    
+    
+    for (i = 0; i < fieldSize; i++) {
+    	printf("%s\t\t", fields[i]);
+	}
+    
+    while(fgets(lineText, 1001, input)) {
+	    sub = strtok(lineText, "#");
+	    
+	    printf("\n-----------------------------------------------\n");
+	    
+	    while (sub) {
+	    	printf("%s\t\t", sub);
+	    	sub = strtok(NULL, "#");
+		}
+		
+		cont++;
+    }
+    
+    printf("\n-----------------------------------------------\n");
+    
+    fclose(input);
+    fclose(fileReader);
+    
+    printf(cont == 0 ? "Tabela não possui algum dado ...\n" : "");
+    
+    system("pause");
+	
+	return 1;
+}
+
+int getEstado () {
+	int status;
+	
+	printf("0- Activo\n1-Inactivo");
+	
+	printf("Selecione o estado:\n(s/n)\n");
+	scanf("%d", &status);
+	
+	return status;
 }
