@@ -4,5 +4,5 @@ int CTgetCompanyTypes () {
 	//Arquivo de entrada
 	FILE *input = fopen(pathCompanyType, "r");
 	
-	return getEntity(fields, input, 3, fieldsCompanyType, 4);
+	return getEntity(fields, input, 3);
 }
