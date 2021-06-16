@@ -18,6 +18,7 @@
 #include "./src/forms/companyType/index.c"
 #include "./src/forms/companyType/store.c"
 #include "./src/forms/companyType/delete.c"
+#include "./src/forms/companyType/search.cpp"
 #include "./src/forms/companyType/update.cpp"
 
 int main() {
@@ -110,6 +111,12 @@ int main() {
 							getAll(option, crudOption, 1);
 								
 							res = CTgetCompanyTypes();
+							
+							system("cls");
+						} else if (crudOption == 5) {
+							getAll(option, crudOption, 1);
+								
+							res = CTsearch();
 							
 							system("cls");
 						}

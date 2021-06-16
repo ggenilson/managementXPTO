@@ -1,4 +1,4 @@
-int CTgetCompanyTypes () {
+int CTsearch () {
 	char * fields[] = { "ID", "TIPO", "Estado" };
 	
 	//Arquivo de entrada

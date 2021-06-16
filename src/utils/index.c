@@ -122,7 +122,7 @@ char getAnswerColor(int res, char * s1, char * s2) {
 
 int getEntity (char *fields[], FILE *fileReader, int fieldSize) {
 	char * sub;
-	int i, cont = 0;
+	int i, cont = 0, k;
 	
 	//Arquivo de entrada
 	FILE *input = fopen(pathCompanyType, "r");
@@ -134,25 +134,32 @@ int getEntity (char *fields[], FILE *fileReader, int fieldSize) {
     //Uma string larga o suficiente para extrair o texto total de cada linha
     char lineText[1001] = "";
     
-    
-    for (i = 0; i < fieldSize; i++) {
-    	printf("%s\t\t", fields[i]);
-	}
-    
     while(fgets(lineText, 1001, input)) {
 	    sub = strtok(lineText, "#");
+	    k = 1;
 	    
-	    printf("\n-----------------------------------------------\n");
+	    printf("-----------------------------------------------\n");
+	    
+	    printf("|%s\t\t%s\n", fields[0], sub);
 	    
 	    while (sub) {
-	    	printf("%s\t\t", sub);
 	    	sub = strtok(NULL, "#");
+	    	
+	    	if (sub) {
+	    		if (k < fieldSize - 1) {
+	    			printf("|%s\t\t%s\n", fields[k], sub);
+				} else {
+					printf("|%s\t\t%s", fields[k], sub);
+				}
+				
+	    		k++;
+			}
 		}
 		
 		cont++;
     }
     
-    printf("\n-----------------------------------------------\n");
+    printf("-----------------------------------------------\n");
     
     fclose(input);
     fclose(fileReader);
@@ -164,13 +171,18 @@ int getEntity (char *fields[], FILE *fileReader, int fieldSize) {
 	return 1;
 }
 
-int getEstado () {
+char * getStatus () {
+	setbuf(stdin, NULL);
+	
 	int status;
 	
-	printf("0- Activo\n1-Inactivo");
-	
-	printf("Selecione o estado:\n(s/n)\n");
-	scanf("%d", &status);
-	
-	return status;
+	do {
+		printf("\nSelecione o estado:");
+		printf("\n0 - Activo\n1 - Inactivo\nOpção (0 ou 1):\n");
+		
+		scanf("%d", &status);
+		setbuf(stdin, NULL);
+	} while(status != 0 && status != 1);
+
+	return status == 1 ? "Activo" : "Inactivo";
 }
