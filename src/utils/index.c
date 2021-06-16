@@ -205,7 +205,7 @@ int getEntity (char *fields[], FILE *fileReader, int fieldSize) {
 	return 1;
 }
 
-int getEntitySearch (char *fields[], FILE *fileReader, int fieldSize, char *fieldsEntity, int fieldsToSearch[], int sizeFields) {
+int getEntitySearch (char *fields[], FILE *fileReader, int fieldSize, char *fieldsEntity, int fieldsToSearch[], int sizeFields, char val[]) {
 	char * sub;
 	int i, cont = 0, k;
 	
@@ -220,7 +220,7 @@ int getEntitySearch (char *fields[], FILE *fileReader, int fieldSize, char *fiel
     
     //Uma string larga o suficiente para extrair o texto total de cada linha
     char lineText[1001] = "";
-    int cont, ver;
+    int ver, index;
     
     while(fgets(lineText, 1001, input)) {
 	    sub = strtok(lineText, "#");

@@ -1,5 +1,6 @@
 int fieldsSearchCompanyType[4];
 int nFields;
+char searchCompanyType[100];
 
 void getTypesSearch () {
 	int i, j;
@@ -10,15 +11,19 @@ void getTypesSearch () {
 	
 	printf("\nPor quantos campos quer pesquisar?\n");
 	scanf("%d", &nFields);
+	setbuf(stdin, NULL);
 	
 	if (nFields <= 4) {
 		for (j = 0; j < nFields; j++) {
 			printf("%dº campo: ", j + 1);
 			scanf("%d", &fieldsSearchCompanyType[j]);
+			setbuf(stdin, NULL);
 		}
 	}
 	
-	printf("\n");
+	printf("\nPesquisa: ");
+	gets(searchCompanyType);
+	setbuf(stdin, NULL);
 }
 
 int CTsearch () {
@@ -29,5 +34,5 @@ int CTsearch () {
 	//Arquivo de entrada
 	FILE *input = fopen(pathCompanyType, "r");
 	
-	return getEntitySearch(fields, input, 3, fieldsCompanyType, fieldsSearchCompanyType, nFields);
+	return getEntitySearch(fields, input, 3, fieldsCompanyType, fieldsSearchCompanyType, nFields, searchCompanyType);
 }
