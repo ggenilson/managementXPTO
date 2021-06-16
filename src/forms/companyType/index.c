@@ -1,5 +1,5 @@
 int CTgetCompanyTypes () {
-	char * fields[] = { "ID", "TIPO", "Estado" };
+	char * fields[] = { "ID", "TIPO", "ESTADO" };
 	
 	//Arquivo de entrada
 	FILE *input = fopen(pathCompanyType, "r");

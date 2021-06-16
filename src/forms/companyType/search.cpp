@@ -13,21 +13,26 @@ void getTypesSearch () {
 	scanf("%d", &nFields);
 	setbuf(stdin, NULL);
 	
-	if (nFields <= 4) {
+	if (nFields <= 4 && nFields >= 1) {
 		for (j = 0; j < nFields; j++) {
 			printf("%dº campo: ", j + 1);
 			scanf("%d", &fieldsSearchCompanyType[j]);
+			fieldsSearchCompanyType[j] = fieldsSearchCompanyType[j] - 1;
 			setbuf(stdin, NULL);
 		}
+		
+		printf("\nPesquisa: ");
+		gets(searchCompanyType);
+		setbuf(stdin, NULL);
+		
+		printf("\n\nResultado encontrado:\n");
+	} else {
+		printf("Valor inválido!\n");
 	}
-	
-	printf("\nPesquisa: ");
-	gets(searchCompanyType);
-	setbuf(stdin, NULL);
 }
 
 int CTsearch () {
-	char * fields[] = { "ID", "TIPO", "Estado" };
+	char * fields[] = { "ID", "TIPO", "ESTADO" };
 	
 	getTypesSearch();
 	

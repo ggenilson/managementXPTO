@@ -1,6 +1,6 @@
 char * fieldsCompanyType[] = {
 	"1 - ID",
-	"2 - Nome",
-	"3 - Estado",
-	"4 - Todos"
+	"2 - TIPO",
+	"3 - ESTADO",
+	"4 - TODOS"
 };

@@ -206,8 +206,8 @@ int getEntity (char *fields[], FILE *fileReader, int fieldSize) {
 }
 
 int getEntitySearch (char *fields[], FILE *fileReader, int fieldSize, char *fieldsEntity, int fieldsToSearch[], int sizeFields, char val[]) {
-	char * sub;
-	int i, cont = 0, k;
+	char *sub, copy[1001];
+	int i, cont = 0, k, helper;
 	
 	//Arquivo de entrada
 	FILE *input = fopen(pathCompanyType, "r");
@@ -220,54 +220,83 @@ int getEntitySearch (char *fields[], FILE *fileReader, int fieldSize, char *fiel
     
     //Uma string larga o suficiente para extrair o texto total de cada linha
     char lineText[1001] = "";
-    int ver, index;
+    int index, ver, all;
+    
+    strlwr(val);
     
     while(fgets(lineText, 1001, input)) {
+    	strcpy(copy, lineText);
+    	strlwr(lineText);
 	    sub = strtok(lineText, "#");
-	    k = 1;
+	    k = 0;
+	    all = 0;
+	    helper = 0;
 	    
 	    index = contains(fieldsToSearch, k, sizeFields);
+		all = contains(fieldsToSearch, fieldSize, sizeFields);
 		
-		if (index != -1) {
+		if (index != -1 || all != -1) {
 			ver = strstr(sub, val) - sub;
 	    
 		    if (ver > -1) {
-		    	printf("-----------------------------------------------\n");
-		    	printf("|%s\t\t%s\n", fields[0], sub);
-			}
+		    	helper = 1;
+		    }
 		}
+		
+		k++;
 	    
 	    while (sub) {
 	    	sub = strtok(NULL, "#");
 	    	
-	    	if (sub) {
+	    	if (sub && k != 0) {
 	    		index = contains(fieldsToSearch, k, sizeFields);
-			
-				if (index != -1) {
-					ver = strstr(sub, val) - sub;
-			    
+	    		
+	    		if (index != -1 || all != -1) {
+	    			ver = strstr(sub, val) - sub;
+	    
 				    if (ver > -1) {
-				    	if (k < fieldSize - 1) {
-			    			printf("|%s\t\t%s\n", fields[k], sub);
-						} else {
-							printf("|%s\t\t%s", fields[k], sub);
-						}
-					}
+				    	helper = 1;
+				    }
 				}
 				
 	    		k++;
 			}
 		}
 		
-		cont++;
+		if (helper) {
+			k = 0;
+			sub = strtok(copy, "#");
+			cont++;
+			
+			printf("-----------------------------------------------\n");
+	    	printf("|%s\t\t%s\n", fields[k], sub);
+	    	
+	    	k++;
+	    	
+	    	while (sub) {
+	    		sub = strtok(NULL, "#");
+	    		
+	    		if (sub && k != 0) {
+	    			if (k < fieldSize - 1) {
+	    				printf("|%s\t\t%s\n", fields[k], sub);
+					} else {
+						printf("|%s\t\t%s", fields[k], sub);
+					}
+					
+					k++;
+				}
+			}
+		}
     }
     
-    printf("-----------------------------------------------\n");
+    printf(cont > 0 ? "-----------------------------------------------\n" : "");
     
     fclose(input);
     fclose(fileReader);
     
-    printf(cont == 0 ? "Tabela não possui algum dado ...\n" : "");
+    textcolor(RED);
+    printf(cont == 0 ? "Tabela não possui algum dado ...\n\n" : "\n");
+    textcolor(GREEN);
     
     system("pause");
 	
