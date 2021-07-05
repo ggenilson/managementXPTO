@@ -1,4 +1,4 @@
-int CTStore () {	
+int CpTStore () {	
 	setbuf(stdin, NULL);
 	
     struct company {
@@ -7,7 +7,7 @@ int CTStore () {
         char *status;
     } cn;
 
-    puts("Tipo da Empresa:");
+    puts("Tipo do Componente:");
     gets(cn.type);
     setbuf(stdin, NULL);
     
@@ -15,8 +15,8 @@ int CTStore () {
     
     FILE *file, *fileReader;
     
-    file = fopen(pathCompanyType, "a");
-    fileReader = fopen(pathCompanyType, "r");
+    file = fopen(pathComponentType, "a");
+    fileReader = fopen(pathComponentType, "r");
     
     if (!file || !fileReader) {
     	printf("Arquivo não pode ser aberto!\n");

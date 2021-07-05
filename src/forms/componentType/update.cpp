@@ -1,24 +1,24 @@
 typedef struct {
 	char id[10], type[50], status[10];
-} companyType;
+} componentType;
 
-companyType companyTypeData[1001];
+componentType componentTypeData[1001];
 
-int contCompanyType = 0;
+int contComponentType = 0;
 
-void getFieldsToEditCT () {
+void getFieldsToEditCpT () {
 	int i;
 	for (i = 0; i < 2; i++) {
-		printf("%s\n", fieldsCompanyTypeToEdit[i]);
+		printf("%s\n", fieldsComponentTypeToEdit[i]);
 	}
 }
 
-void pastCompanyTypeToData () {
+void pastComponentTypeToData () {
 	char * sub;
 	int k, i;
 	
 	//Arquivo de entrada
-	FILE *input = fopen(pathCompanyType, "r");
+	FILE *input = fopen(pathComponentType, "r");
     
     /*if (!input) {
     	return 0;
@@ -31,7 +31,7 @@ void pastCompanyTypeToData () {
 	    sub = strtok(lineText, "#");
 	    k = 0;
 	    
-	    strcpy(companyTypeData[contCompanyType].id, sub);
+	    strcpy(componentTypeData[contComponentType].id, sub);
 	    
 	    while (sub) {
 	    	sub = strtok(NULL, "#");
@@ -39,34 +39,34 @@ void pastCompanyTypeToData () {
 	    	if (sub) {
 	    		k++;
 	    		if (k == 1) {
-	    			strcpy(companyTypeData[contCompanyType].type, sub);
+	    			strcpy(componentTypeData[contComponentType].type, sub);
 				} else if (k == 2) {
-					strcpy(companyTypeData[contCompanyType].status, sub);
+					strcpy(componentTypeData[contComponentType].status, sub);
 				}
 			}
 		}
 		
-		contCompanyType++;
+		contComponentType++;
     }
     
     fclose(input);
     
-    if (contCompanyType > 0) {
-    	getFieldsToEditCT();
+    if (contComponentType > 0) {
+    	getFieldsToEditCpT();
 	} else {
 		printf("Tabela não possui algum dado para editar ...\n");
 	}
 }
 
-int CTupdate () {
-	pastCompanyTypeToData();
+int CpTupdate () {
+	pastComponentTypeToData();
 	
 	setbuf(stdin, NULL);
 	
 	int id, ret = 0, field, i;
 	char newCompany[100], newValue[100];
 	
-	printf("Especifique o código da Empresa, para assim editar:\n");
+	printf("Especifique o código do Componente, para assim editar:\n");
 	scanf("%d", &id);
 	setbuf(stdin, NULL);
 	
@@ -74,8 +74,8 @@ int CTupdate () {
 	scanf("%d", &field);
 	setbuf(stdin, NULL);
 
-	for (i = 0; i < contCompanyType; i++) {
-		if (atoi(companyTypeData[i].id) == id) {
+	for (i = 0; i < contComponentType; i++) {
+		if (atoi(componentTypeData[i].id) == id) {
 			ret = 1;
 			
 			if (field == 1) {
@@ -83,29 +83,29 @@ int CTupdate () {
 				gets(newValue);
 				setbuf(stdin, NULL);
 	
-				strcpy(companyTypeData[i].type, newValue);
+				strcpy(componentTypeData[i].type, newValue);
 				break;
 			}
 			
 			if (field == 2) {
 				char *auxStatus = getStatus(0);
-				strcpy(companyTypeData[i].status, auxStatus);
+				strcpy(componentTypeData[i].status, auxStatus);
 				break;
 			}	
 		}
 	}
 	
 	if (ret) {
-		FILE *input = fopen(pathCompanyType, "w+");
+		FILE *input = fopen(pathComponentType, "w+");
 	
-		for (i = 0; i < contCompanyType; i++) {
-			fprintf(input, "%s#%s#%s", companyTypeData[i].id, companyTypeData[i].type, companyTypeData[i].status);
+		for (i = 0; i < contComponentType; i++) {
+			fprintf(input, "%s#%s#%s", componentTypeData[i].id, componentTypeData[i].type, componentTypeData[i].status);
 		}
 		
 		fclose(input);
 	}
 	
-	contCompanyType = 0;
+	contComponentType = 0;
 	
     return ret;
 }

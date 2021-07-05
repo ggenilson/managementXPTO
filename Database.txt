@@ -1,0 +1,72 @@
+Criando Banco de Dados do ManagmentXPTO
+
+Ficha de Componentes:
+Id
+Designacao - designation
+numSerie
+dataAquisicao - Acquisition 
+garantia - warranty
+idFornecedor - supplier
+idFabricante - manufacturer
+idTipo 
+condicao - condition
+idPostoTrabalho - idPostoTrabalho
+obs - obs
+
+Ficha de Tipo:
+Id
+tipo
+Já
+
+Ficha de Posto de Trabalho:
+Id
+designacao
+local
+seccao
+descricao
+idFuncionario
+Já
+
+Ficha de Funcionario:
+Id
+Nome
+idFuncao
+descricao
+Já
+
+Ficha de Funcao:
+Id
+funcao
+Já
+
+Ficha de Operacoes:
+Id
+numDocInterno
+numDocExterno
+idPostoTrabalho
+idComponente
+idEmpresa
+idTipoOperacao
+dataSaida
+dataChegada
+dataPrevistachegada
+idFuncionario
+dataOperacao
+montante
+obs
+
+Ficha de Tipo de Operacoes:
+Id
+operacao
+
+Ficha de Empresa:
+Id
+nome
+idTipo 
+Já!
+
+Ficha de Tipo de Empresa:
+Id
+Tipo (Fornecedor, Agencia, etc)
+Já
+

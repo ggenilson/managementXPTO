@@ -8,7 +8,6 @@ char * initialOptions[] = {
 	"Gerir Tipo de Operações",
 	"Gerir Empresa",
 	"Gerir Tipo de Empresa",
-	"Gerir Contacto",
 	"Sair"
 };
 
@@ -21,6 +20,8 @@ char * crudOptions[] = {
 	"Voltar"
 };
 
+
+//Procedimento para dar n "\n"
 void getNewLine (int number) {
 	int i = 0;
 	

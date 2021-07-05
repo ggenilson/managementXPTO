@@ -1,0 +1,4 @@
+1#Fabricante#Activo
+2#Fornecedor#Inactivo
+3#Isto não#Inactivo
+4#Parceiro#Activo

@@ -11,8 +11,8 @@
 #include "./src/utils/paths.c"
 #include "./src/utils/index.c"
 #include "./src/utils/consts.c"
-#include "./src/forms/components.c"
 #include "./src/utils/menusOptions.c"
+#include "./src/utils/renderOptions.c"
 
 //Importando Funções de Company Type
 #include "./src/forms/companyType/index.c"
@@ -21,9 +21,51 @@
 #include "./src/forms/companyType/search.cpp"
 #include "./src/forms/companyType/update.cpp"
 
+//Importando Funções de Company
+#include "./src/forms/company/index.c"
+#include "./src/forms/company/store.c"
+#include "./src/forms/company/delete.c"
+#include "./src/forms/company/search.cpp"
+#include "./src/forms/company/update.cpp"
+
+//Importando Funções de Component Type
+#include "./src/forms/componentType/index.c"
+#include "./src/forms/componentType/store.c"
+#include "./src/forms/componentType/delete.c"
+#include "./src/forms/componentType/search.cpp"
+#include "./src/forms/componentType/update.cpp"
+
+//Importando Funções de Function
+#include "./src/forms/function/index.c"
+#include "./src/forms/function/store.c"
+#include "./src/forms/function/delete.c"
+#include "./src/forms/function/search.cpp"
+#include "./src/forms/function/update.cpp"
+
+//Importando Funções de Employe
+#include "./src/forms/employe/index.c"
+#include "./src/forms/employe/store.c"
+#include "./src/forms/employe/delete.c"
+#include "./src/forms/employe/search.cpp"
+#include "./src/forms/employe/update.cpp"
+
+//Importando Funções de WorkPlace
+#include "./src/forms/workPlace/index.c"
+#include "./src/forms/workPlace/store.c"
+#include "./src/forms/workPlace/delete.c"
+//#include "./src/forms/workPlace/search.cpp"
+#include "./src/forms/workPlace/update.cpp"
+
+//Importando Funções de Components
+#include "./src/forms/components/index.c"
+#include "./src/forms/components/store.c"
+#include "./src/forms/components/delete.c"
+#include "./src/forms/components/search.cpp"
+#include "./src/forms/components/update.cpp"
+
 int main() {
 	setlocale(LC_ALL, "Portuguese");
-	//fullScreen();
+	fullScreen();
 	system("color 70");
 		
 	textcolor(GREEN);
@@ -35,8 +77,8 @@ int main() {
 	int control = 0, control1 = 0;
 	
 	//Variáveis responsáveis por manipular as respostas
-	int answer, res;
-	char ans, help[2];
+	int answer;
+	char help[2];
 	
 	do {
 		//Chamando o menu principal
@@ -70,56 +112,25 @@ int main() {
 					getAll(option, crudOption, 1);
 							
 					if (option == 1) {
-						Components();
+						ComponentsOptions(option, crudOption);
 					} else if (option == 2) {
-						Components();
+						//Lidando com o Tipo Componente
+						ComponentTypeOptions(option, crudOption);
+					} else if (option == 3) {
+						//Lidando com o Posto de Trabalho
+						WorkPlaceOptions(option, crudOption);
+					} else if (option == 4) {
+						//Lidando com o Funcionário
+						EmployeOptions(option, crudOption);
+					} else if (option == 5) {
+						//Lidando com a Função
+						FunctionOptions(option, crudOption);
+					} else if (option == 8) {
+						//Lidando com a Empresa
+						CompanyOptions(option, crudOption);
 					} else if (option == 9) {
 						//Lidando com o Tipo Empresa
-						if (crudOption == 1) {
-							//*****************************************************************
-							//Área para alocação do formulário para cadastro do Tipo de Empresa
-							do {
-								getAll(option, crudOption, 1);
-								
-								res = CTStore();
-								
-								ans = getAnswerColor(res, storeCompany, errStore);
-							} while(ans == 's' || ans == 'S');
-							
-							system("cls");
-						} else if (crudOption == 2) {
-							do {
-								getAll(option, crudOption, 1);
-								
-								res = CTupdate();
-								
-								ans = getAnswerColor(res, updateCompany, notFoundCompany);
-							} while(ans == 's' || ans == 'S');
-							
-							system("cls");
-						} else if (crudOption == 3) {
-							do {
-								getAll(option, crudOption, 1);
-								
-								res = CTdel();
-								
-								ans = getAnswerColor(res, deleteCompany, notFoundCompany);
-							} while(ans == 's' || ans == 'S');
-							
-							system("cls");
-						} else if (crudOption == 4) {
-							getAll(option, crudOption, 1);
-								
-							res = CTgetCompanyTypes();
-							
-							system("cls");
-						} else if (crudOption == 5) {
-							getAll(option, crudOption, 1);
-								
-							res = CTsearch();
-							
-							system("cls");
-						}
+						CompanyTypeOptions(option, crudOption);
 					}
 				}
 			} while(!control1);

@@ -1,10 +1,3 @@
-1#grnihelton#Activo
-2#fg#Inactivo
-4#genilson#Activo
-5#genilson#Activo
-6#dfdf#Inactivo
-7#miguel buca#Inactivo
-8#sediangani#Inactivo
-9#araujo#Activo
-10##Inactivo
-11#ge8#Inactivo
+1#Fabricante#Activo
+2#Fornecedor#Activo
+3#Outro#Activo

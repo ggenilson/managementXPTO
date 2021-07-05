@@ -1,19 +1,19 @@
 typedef struct {
-	char id[10], type[50], status[10];
-} companyType;
+	char id[10], function[50], status[10];
+} function;
 
-companyType companyTypeData[1001];
+function functionData[1001];
 
-int contCompanyType = 0;
+int contFunction = 0;
 
-void getFieldsToEditCT () {
+void getFieldsToEditFc () {
 	int i;
 	for (i = 0; i < 2; i++) {
 		printf("%s\n", fieldsCompanyTypeToEdit[i]);
 	}
 }
 
-void pastCompanyTypeToData () {
+void pastFunctionToData () {
 	char * sub;
 	int k, i;
 	
@@ -31,7 +31,7 @@ void pastCompanyTypeToData () {
 	    sub = strtok(lineText, "#");
 	    k = 0;
 	    
-	    strcpy(companyTypeData[contCompanyType].id, sub);
+	    strcpy(functionData[contFunction].id, sub);
 	    
 	    while (sub) {
 	    	sub = strtok(NULL, "#");
@@ -39,27 +39,27 @@ void pastCompanyTypeToData () {
 	    	if (sub) {
 	    		k++;
 	    		if (k == 1) {
-	    			strcpy(companyTypeData[contCompanyType].type, sub);
+	    			strcpy(functionData[contFunction].function, sub);
 				} else if (k == 2) {
-					strcpy(companyTypeData[contCompanyType].status, sub);
+					strcpy(functionData[contFunction].status, sub);
 				}
 			}
 		}
 		
-		contCompanyType++;
+		contFunction++;
     }
     
     fclose(input);
     
-    if (contCompanyType > 0) {
-    	getFieldsToEditCT();
+    if (contFunction > 0) {
+    	getFieldsToEditFc();
 	} else {
 		printf("Tabela não possui algum dado para editar ...\n");
 	}
 }
 
-int CTupdate () {
-	pastCompanyTypeToData();
+int FcUpdate () {
+	pastFunctionToData();
 	
 	setbuf(stdin, NULL);
 	
@@ -74,8 +74,8 @@ int CTupdate () {
 	scanf("%d", &field);
 	setbuf(stdin, NULL);
 
-	for (i = 0; i < contCompanyType; i++) {
-		if (atoi(companyTypeData[i].id) == id) {
+	for (i = 0; i < contFunction; i++) {
+		if (atoi(functionData[i].id) == id) {
 			ret = 1;
 			
 			if (field == 1) {
@@ -83,29 +83,29 @@ int CTupdate () {
 				gets(newValue);
 				setbuf(stdin, NULL);
 	
-				strcpy(companyTypeData[i].type, newValue);
+				strcpy(functionData[i].function, newValue);
 				break;
 			}
 			
 			if (field == 2) {
 				char *auxStatus = getStatus(0);
-				strcpy(companyTypeData[i].status, auxStatus);
+				strcpy(functionData[i].status, auxStatus);
 				break;
 			}	
 		}
 	}
 	
 	if (ret) {
-		FILE *input = fopen(pathCompanyType, "w+");
+		FILE *input = fopen(pathFunction, "w+");
 	
-		for (i = 0; i < contCompanyType; i++) {
-			fprintf(input, "%s#%s#%s", companyTypeData[i].id, companyTypeData[i].type, companyTypeData[i].status);
+		for (i = 0; i < contFunction; i++) {
+			fprintf(input, "%s#%s#%s", functionData[i].id, functionData[i].function, functionData[i].status);
 		}
 		
 		fclose(input);
 	}
 	
-	contCompanyType = 0;
+	contFunction = 0;
 	
     return ret;
 }

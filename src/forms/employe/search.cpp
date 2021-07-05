@@ -1,4 +1,4 @@
-int fieldsSearchCompanyType[4];
+/*int fieldsSearchCompanyType[4];
 int nFields;
 char searchCompanyType[100];
 
@@ -37,4 +37,4 @@ int CTsearch () {
 	getTypesSearchCT();
 	
 	return getEntitySearch(fields, pathCompanyType, 3, fieldsSearchCompanyType, nFields, searchCompanyType);
-}
+}*/

@@ -1,15 +1,11 @@
 //Função que ordena um vetor
-void sort(int vetorN[], int size)
-{
+void sort(int vetorN[], int size){
 	int i, j;
 	int aux;
 	
-	for(i = 0; i < size; i++)
-	{
-	    for(j = 0; j < size - 1; j++)
-	    {
-	        if(vetorN[j] > vetorN[j + 1])
-	        {
+	for(i = 0; i < size; i++) {
+	    for(j = 0; j < size - 1; j++) {
+	        if(vetorN[j] > vetorN[j + 1]) {
 	            aux = vetorN[j];
 	            vetorN[j] = vetorN[j + 1];
 	            vetorN[j + 1] = aux;
@@ -18,6 +14,7 @@ void sort(int vetorN[], int size)
 	}
 }
 
+//Função que verifica se um valor contém em um Array
 int contains (int vetorN[], int val, int size) {
 	int i, pos = -1;
 	
@@ -136,6 +133,7 @@ int getNewID (char str[], FILE *fileReader) {
 }
 
 char getAnswerColor(int res, char * s1, char * s2) {
+	setbuf(stdin, NULL);
 	char ans;
 	
 	if (res) {
@@ -148,18 +146,79 @@ char getAnswerColor(int res, char * s1, char * s2) {
 	
 	textcolor(GREEN);
 	
-	printf("\nPretende fazer mais uma vez?\n(s/n)\n");
+	printf("\nPretende executar a acção mais uma vez?\n(s/n)\n");
 	scanf(" %c", &ans);
+	setbuf(stdin, NULL);
 	
 	return ans;
 }
 
-int getEntity (char *fields[], FILE *fileReader, int fieldSize) {
-	char * sub;
+char getNormalAnswer () {
+	setbuf(stdin, NULL);
+	char ans;
+	
+	printf("\nPretende executar acção mais uma vez?\n(s/n)\n");
+	scanf(" %c", &ans);
+	setbuf(stdin, NULL);
+	
+	return ans;
+}
+
+void auxGetEntityFK (FILE *fr, char title[], int aux, int otherField, int fieldSize) {
+	char lFK[1001] = "", copy[1001] = ""; 
+	char *subFK;
+	int k1, helper;
+	
+	while(fgets(lFK, 1001, fr)) {
+		strcpy(copy, lFK);
+		subFK = strtok(lFK, "#");
+		
+		if (aux == atoi(subFK)) {
+			k1 = 1;
+			helper = 0;
+		
+			while(subFK) {
+				subFK = strtok(NULL, "#");
+				if (k1 == fieldSize) {
+					if (strcmp(subFK, "Inactivo\n") == 0) {
+						helper = 1;
+					}
+					
+					break;
+				}
+				
+				k1++;
+			}
+			
+			k1 = 1;
+			subFK = strtok(copy, "#");
+			
+			while(subFK) {
+				subFK = strtok(NULL, "#");
+				
+				if (k1 == otherField) {
+					if (subFK) {
+						if (helper) textcolor(RED);
+						printf("|%s\t\t%s\n", title, subFK);
+						textcolor(GREEN);
+					}
+					
+					break;
+				}
+			}
+		}
+		
+		memset(lFK, 0, sizeof(char) * 1001);
+	}
+}
+
+int getEntityFK (char *fields[], char *fileReader, int fieldSize, char *fks[], int fksFieldsShow[], int endLineFK[]) {
+	char *sub;
 	int i, cont = 0, k;
 	
 	//Arquivo de entrada
-	FILE *input = fopen(pathCompanyType, "r");
+	FILE *input = fopen(fileReader, "r");
+	FILE *inp;
     
     if (!input) {
     	return 0;
@@ -167,50 +226,143 @@ int getEntity (char *fields[], FILE *fileReader, int fieldSize) {
     
     //Uma string larga o suficiente para extrair o texto total de cada linha
     char lineText[1001] = "";
+    char *found, *aux;
+    int index, startFK, ver1;
     
     while(fgets(lineText, 1001, input)) {
-	    sub = strtok(lineText, "#");
-	    k = 1;
+    	ver1 = strstr(lineText, "Activo\n") - lineText;
+    	
+    	if (ver1 > -1) {
+    		sub = strtok(lineText, "#");
+		    k = 1;
+		    startFK = 0;
+		    
+		    printf("-----------------------------------------------\n");
 	    
-	    printf("-----------------------------------------------\n");
-	    
-	    printf("|%s\t\t%s\n", fields[0], sub);
-	    
-	    while (sub) {
-	    	sub = strtok(NULL, "#");
-	    	
-	    	if (sub) {
-	    		if (k < fieldSize - 1) {
-	    			printf("|%s\t\t%s\n", fields[k], sub);
-				} else {
-					printf("|%s\t\t%s", fields[k], sub);
+		    printf("|%s\t\t%s\n", fields[0], sub);
+		    
+		    while (sub) {
+		    	sub = strtok(NULL, "#");
+		    	
+		    	if (sub) {
+		    		//Verificando se existe chave secundária
+		    		if (strchr(sub, '>') - sub > -1) {
+		    			found = strchr(sub, '>');
+						index = found ? found - sub : -1;
+		    			aux = substring(sub, 0, index);
+		    			inp = fopen(fks[startFK], "r");
+		    			
+		    			auxGetEntityFK(inp, fields[k], atoi(aux), fksFieldsShow[startFK], endLineFK[startFK]);
+		    			startFK++;
+					} else {
+						if (k < fieldSize - 1) {
+		    				printf("|%s\t\t%s\n", fields[k], sub);
+						} else {
+							printf("|%s\t\t%s", fields[k], sub);
+						}
+					}
+					
+		    		k++;
 				}
-				
-	    		k++;
 			}
+			
+			fclose(inp);
+			cont++;	
 		}
 		
-		cont++;
+		memset(lineText, 0, sizeof(char) * 1001);
     }
     
-    printf("-----------------------------------------------\n");
-    
     fclose(input);
-    fclose(fileReader);
     
-    printf(cont == 0 ? "Tabela não possui algum dado ...\n" : "");
+    printf(cont == 0 ? "Tabela não possui algum dado ...\n" : "-----------------------------------------------\n");
     
     system("pause");
 	
 	return 1;
 }
 
-int getEntitySearch (char *fields[], FILE *fileReader, int fieldSize, char *fieldsEntity, int fieldsToSearch[], int sizeFields, char val[]) {
+int getEntity (char *fields[], char *fileReader, int fieldSize) {
+	char * sub;
+	int i, cont = 0, k, helper;
+	
+	//Arquivo de entrada
+	FILE *input = fopen(fileReader, "r");
+    
+    if (!input) {
+    	return 0;
+	}
+    
+    //Uma string larga o suficiente para extrair o texto total de cada linha
+    char lineText[1001] = "", copy[1001] = "";
+    
+    while(fgets(lineText, 1001, input)) {
+    	strcpy(copy, lineText);
+	    sub = strtok(lineText, "#");
+	    k = 1;
+	    helper = 0;
+	    
+	    while (sub) {
+	    	sub = strtok(NULL, "#");
+	    	
+	    	if (sub) {
+	    		k++;
+				
+				if (k == fieldSize) {
+					if (strcmp(sub, "Activo\n") == 0) {
+						helper = 1;
+					}
+				}
+			}
+		}
+		
+		if (helper) {
+			k = 0;
+			sub = strtok(copy, "#");
+			
+			printf("-----------------------------------------------\n");
+	    
+		    printf("|%s\t\t%s\n", fields[0], sub);
+		    
+		    while (sub) {
+		    	sub = strtok(NULL, "#");
+		    	
+		    	if (sub) {
+		    		k++;
+		    		
+		    		if (k < fieldSize - 1) {
+		    			printf("|%s\t\t%s\n", fields[k], sub);
+					} else {
+						printf("|%s\t\t%s", fields[k], sub);
+					}
+				}
+			}
+			
+			cont++;
+		}
+    }
+    
+    fclose(input);
+    
+    if (cont > 0) {
+    	 printf("-----------------------------------------------\n");
+	} else {
+		textcolor(RED);
+		printf("Tabela não possui algum dado ...\n");
+		textcolor(GREEN);
+	}
+    
+    system("pause");
+	
+	return 1;
+}
+
+int getEntitySearch (char *fields[], char *fileReader, int fieldSize, int fieldsToSearch[], int sizeFields, char val[]) {
 	char *sub, copy[1001];
 	int i, cont = 0, k, helper;
 	
 	//Arquivo de entrada
-	FILE *input = fopen(pathCompanyType, "r");
+	FILE *input = fopen(fileReader, "r");
     
     if (!input) {
     	return 0;
@@ -220,70 +372,74 @@ int getEntitySearch (char *fields[], FILE *fileReader, int fieldSize, char *fiel
     
     //Uma string larga o suficiente para extrair o texto total de cada linha
     char lineText[1001] = "";
-    int index, ver, all;
+    int index, ver,ver1, all;
     
     strlwr(val);
     
     while(fgets(lineText, 1001, input)) {
-    	strcpy(copy, lineText);
-    	strlwr(lineText);
-	    sub = strtok(lineText, "#");
-	    k = 0;
-	    all = 0;
-	    helper = 0;
+    	ver1 = strstr(lineText, "Activo\n") - lineText;
 	    
-	    index = contains(fieldsToSearch, k, sizeFields);
-		all = contains(fieldsToSearch, fieldSize, sizeFields);
-		
-		if (index != -1 || all != -1) {
-			ver = strstr(sub, val) - sub;
-	    
-		    if (ver > -1) {
-		    	helper = 1;
-		    }
-		}
-		
-		k++;
-	    
-	    while (sub) {
-	    	sub = strtok(NULL, "#");
-	    	
-	    	if (sub && k != 0) {
-	    		index = contains(fieldsToSearch, k, sizeFields);
-	    		
-	    		if (index != -1 || all != -1) {
-	    			ver = strstr(sub, val) - sub;
-	    
-				    if (ver > -1) {
-				    	helper = 1;
-				    }
-				}
-				
-	    		k++;
-			}
-		}
-		
-		if (helper) {
-			k = 0;
-			sub = strtok(copy, "#");
-			cont++;
+    	if (ver1 > -1) {
+    		strcpy(copy, lineText);
+	    	strlwr(lineText);
+		    sub = strtok(lineText, "#");
+		    k = 0;
+		    all = 0;
+		    helper = 0;
+		    
+		    index = contains(fieldsToSearch, k, sizeFields);
+			all = contains(fieldsToSearch, fieldSize, sizeFields);
 			
-			printf("-----------------------------------------------\n");
-	    	printf("|%s\t\t%s\n", fields[k], sub);
-	    	
-	    	k++;
-	    	
-	    	while (sub) {
-	    		sub = strtok(NULL, "#");
-	    		
-	    		if (sub && k != 0) {
-	    			if (k < fieldSize - 1) {
-	    				printf("|%s\t\t%s\n", fields[k], sub);
-					} else {
-						printf("|%s\t\t%s", fields[k], sub);
+			if (index != -1 || all != -1) {
+				ver = strstr(sub, val) - sub;
+		    
+			    if (ver > -1) {
+			    	helper = 1;
+			    }
+			}
+		
+			k++;
+	    
+		    while (sub) {
+		    	sub = strtok(NULL, "#");
+		    	
+		    	if (sub && k != 0) {
+		    		index = contains(fieldsToSearch, k, sizeFields);
+		    		
+		    		if (index != -1 || all != -1) {
+		    			ver = strstr(sub, val) - sub;
+		    
+					    if (ver > -1) {
+					    	helper = 1;
+					    }
 					}
 					
-					k++;
+		    		k++;
+				}
+			}
+		
+			if (helper) {
+				k = 0;
+				sub = strtok(copy, "#");
+				cont++;
+				
+				printf("-----------------------------------------------\n");
+		    	printf("|%s\t\t%s\n", fields[k], sub);
+		    	
+		    	k++;
+		    	
+		    	while (sub) {
+		    		sub = strtok(NULL, "#");
+		    		
+		    		if (sub && k != 0) {
+		    			if (k < fieldSize - 1) {
+		    				printf("|%s\t\t%s\n", fields[k], sub);
+						} else {
+							printf("|%s\t\t%s", fields[k], sub);
+						}
+						
+						k++;
+					}
 				}
 			}
 		}
@@ -292,29 +448,316 @@ int getEntitySearch (char *fields[], FILE *fileReader, int fieldSize, char *fiel
     printf(cont > 0 ? "-----------------------------------------------\n" : "");
     
     fclose(input);
-    fclose(fileReader);
     
     textcolor(RED);
     printf(cont == 0 ? "Tabela não possui algum dado ...\n\n" : "\n");
     textcolor(GREEN);
-    
-    system("pause");
 	
 	return 1;
 }
 
-char * getStatus () {
+int removeField (char *path, int id, int length) {
+	//Arquivo de entrada
+	FILE *input = fopen(path, "r");
+	
+	//Arquivo de saída
+    FILE *output = fopen("helpful.txt", "w+");
+    
+    if (!input || !output) {
+    	return 5;
+	}
+    
+    //Uma string larga o suficiente para extrair o texto total de cada linha
+    char lineText[1001] = "", copy[1001] = "", copy1[1001] = "";
+    
+    int index, idCompare, ret = 0, helper;
+	char * aux, * found, *sub, k;
+	
+    while(fgets(lineText, 1001, input)) {
+    	strcpy(copy, lineText);
+    	strcpy(copy1, lineText);
+    	sub = strtok(lineText, "#");
+    	
+    	helper = 0;
+    	k = 0;
+	    
+	    while (sub) {
+	    	sub = strtok(NULL, "#");
+	    	
+	    	if (sub) {
+	    		k++;
+				
+				if (k == length) {
+					if (strcmp(sub, "Activo\n") == 0) {
+						helper = 1;
+					} else {
+						fputs(copy, output);
+					}
+				}
+			}
+		}
+		
+		if (helper) {
+			sub = strtok(copy1, "#");
+			
+			if (id == atoi(sub)) {
+				fprintf(output, "%d#", id);
+				k = 0;
+				
+				while(sub) {
+					sub = strtok(NULL, "#");
+					if (sub) {
+						k++;
+				
+						if (k == length) {
+							fprintf(output, "Inactivo\n");
+						} else {
+							fprintf(output, "%s#", sub);
+						}
+					}
+				}
+				
+				ret = 1;
+			} else {
+				fputs(copy, output);
+			}
+		}
+        
+        memset(lineText, 0, sizeof(char) * 1001);
+    }
+    
+    fclose(input);
+    fclose(output);
+    
+    remove(path);
+    rename("helpful.txt", path);
+    
+    return ret;
+}
+
+char * getStatus (int type) {
 	setbuf(stdin, NULL);
 	
 	int status;
 	
 	do {
 		printf("\nSelecione o estado:");
-		printf("\n0 - Activo\n1 - Inactivo\nOpção (0 ou 1):\n");
+		printf("\n0 - Inactivo\n1 - Activo\nOpção (0 ou 1):\n");
 		
 		scanf("%d", &status);
 		setbuf(stdin, NULL);
 	} while(status != 0 && status != 1);
-
-	return status == 1 ? "Activo" : "Inactivo";
+	
+	if (!type) {
+		return status == 1 ? "Activo\n" : "Inactivo\n";
+	} else {
+		return status == 1 ? "Activo" : "Inactivo";
+	}
 }
+
+int getFK (char *path, int valuesToGet[], int sizeValuesToGet, int endLine) {
+	setbuf(stdin, NULL);
+	char * sub, copy[1001];
+	int ver, cont = 0, k, helper, vetId[1001], contVetId = 0;
+	int contH = 0, val;
+	
+	//Arquivo de entrada
+	FILE *input = fopen(path, "r");
+	
+    //Uma string larga o suficiente para extrair o texto total de cada linha
+    char lineText[1001] = "";
+    
+    while(fgets(lineText, 1001, input)) {
+    	strcpy(copy, lineText);
+	    sub = strtok(lineText, "#");
+	    k = 0;
+	    helper = 0;
+	    
+	    while (sub) {
+	    	sub = strtok(NULL, "#");
+	    	
+	    	if (sub) {
+	    		k++;
+				
+				if (k == endLine) {
+					if (strcmp(sub, "Activo\n") == 0) {
+						helper = 1;
+					}
+				}
+			}
+		}
+		
+		if (helper) {
+			k = 0;
+			sub = strtok(copy, "#");
+			printf("%s - ", sub);
+			
+			vetId[contVetId] = atoi(sub);
+			contVetId++;
+			contH++;
+			
+			while (sub) {
+		    	sub = strtok(NULL, "#");
+		    	
+		    	if (sub) {
+		    		k++;
+		    		ver = contains(valuesToGet, k, sizeValuesToGet);
+		    		
+		    		if (ver > -1) {
+		    			printf("%s\n", sub);
+					}
+				}
+			}
+		}
+		
+		cont++;
+    }
+    
+    fclose(input);
+    
+    if (contH > 0) {
+    	int h;
+    	
+    	do {
+    		scanf("%d", &val);
+    		setbuf(stdin, NULL);
+    		h = contains(vetId, val, contVetId);
+    		
+    		if (h == -1) {
+    			textcolor(RED);
+    			printf("Erro: Escolha uma opção válida: ");
+    			textcolor(GREEN);
+			}
+		} while(h == -1);
+	}
+    
+    printf(cont == 0 ? "Tabela não possui algum dado ...\n" : "");
+    
+    return val;
+}
+
+int getFK1 (char *path, int valuesToGet[], int sizeValuesToGet, int idSearch, int PosId) {
+	setbuf(stdin, NULL);
+	char * sub, copy[1001];
+	int ver, cont = 0, k, helper, vetId[1001], contVetId = 0;
+	int contH = 0, val, ver1;
+	
+	//Arquivo de entrada
+	FILE *input = fopen(path, "r");
+	
+    //Uma string larga o suficiente para extrair o texto total de cada linha
+    char lineText[1001] = "";
+    
+    while(fgets(lineText, 1001, input)) {
+    	ver1 = strstr(lineText, "Activo\n") - lineText;
+	    
+    	if (ver1 > -1) {
+    		strcpy(copy, lineText);
+		    sub = strtok(lineText, "#");
+		    k = 0;
+		    helper = 0;
+	    
+		    while (sub) {
+		    	sub = strtok(NULL, "#");
+		    	
+		    	if (sub) {
+		    		k++;
+					
+					if (k == PosId) {
+						char *ch = strtok(sub, ">");
+						
+						if (atoi(ch) == idSearch) {
+							helper = 1;
+						}
+					}
+				}
+			}
+		
+			if (helper) {
+				k = 0;
+				sub = strtok(copy, "#");
+				printf("%s - ", sub);
+				
+				if (idSearch == atoi(sub)) {
+					vetId[contVetId] = atoi(sub);
+					contVetId++;
+					contH++;
+					
+					while (sub) {
+				    	sub = strtok(NULL, "#");
+				    	
+				    	if (sub) {
+				    		k++;
+				    		ver = contains(valuesToGet, k, sizeValuesToGet);
+				    		
+				    		if (ver > -1) {
+				    			printf("%s\n", sub);
+							}
+						}
+					}
+				}
+			}
+			
+			cont++;
+    	}
+    }
+    
+    fclose(input);
+    
+    if (contH > 0) {
+    	int h;
+    	
+    	do {
+    		scanf("%d", &val);
+    		setbuf(stdin, NULL);
+    		h = contains(vetId, val, contVetId);
+    		
+    		if (h == -1) {
+    			textcolor(RED);
+    			printf("Erro: Escolha uma opção válida: ");
+    			textcolor(GREEN);
+			}
+		} while(h == -1);
+	}
+    
+    printf(cont == 0 ? "Tabela não possui algum dado ...\n" : "");
+    
+    return val;
+}
+
+char *getDate (char *sms) {
+	char day[4] = "", month[4] = "", year[10] = "", r[20] = "";
+	char *newVal[20];
+	
+	do {
+		printf("%s\n", sms);
+		printf("\tDia: ");
+		scanf("%s", day);
+		setbuf(stdin, NULL);
+		
+		printf("\tMês: ");
+		scanf("%s", month);
+		setbuf(stdin, NULL);
+		
+		printf("\tAno: ");
+		scanf("%s", year);
+		setbuf(stdin, NULL);
+		
+		if (atoi(day) < 1 || atoi(day) > 31 || atoi(month) < 1 || atoi(month) > 12 || atoi(year) < 1) {
+			textcolor(RED);
+			printf("Problema com os dados de entrada, verifique a data digitada!\n\n");
+			textcolor(GREEN);
+		}
+	} while(atoi(day) < 1 || atoi(day) > 31 || atoi(month) < 1 || atoi(month) > 12 || atoi(year) < 1);
+	
+	strcat(r, day);
+	strcat(r, "-");
+	strcat(r, month);
+	strcat(r, "-");
+	strcat(r, year);
+	strcpy(newVal, r);
+	
+	return newVal;
+}
+
+
