@@ -757,6 +757,9 @@ char *getDate (char *sms) {
 	strcat(r, year);
 	strcpy(newVal, r);
 	
+	printf("New = %s\n", r);
+	printf("New Val = %s\n", newVal);
+	
 	return newVal;
 }
 

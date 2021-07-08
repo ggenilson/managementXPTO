@@ -34,6 +34,8 @@ int CpStore () {
     char sms2[] = "Garantia, formato (dd-mm-yyyy)";
     cp.warranty = getDate(sms2);
     
+    printf("%s\n", cp.warranty);
+    
     puts("Selecione o Fornecedor:");
     cp.idManufacturer = getFK1(pathCompany, values, 1, 2, 2);
     
