@@ -2,21 +2,22 @@ Criando Banco de Dados do ManagmentXPTO
 
 Ficha de Componentes:
 Id
-Designacao - designation
+Designacao
 numSerie
-dataAquisicao - Acquisition 
-garantia - warranty
-idFornecedor - supplier
-idFabricante - manufacturer
+dataAquisicao
+garantia
+idFornecedor
+idFabricante
 idTipo 
-condicao - condition
-idPostoTrabalho - idPostoTrabalho
-obs - obs
+condicao
+idPostoTrabalho
+obs
+Já!
 
 Ficha de Tipo:
 Id
 tipo
-Já
+Já!
 
 Ficha de Posto de Trabalho:
 Id
@@ -25,19 +26,19 @@ local
 seccao
 descricao
 idFuncionario
-Já
+Já!
 
 Ficha de Funcionario:
 Id
 Nome
 idFuncao
 descricao
-Já
+Já!
 
 Ficha de Funcao:
 Id
 funcao
-Já
+Já!
 
 Ficha de Operacoes:
 Id
@@ -54,10 +55,12 @@ idFuncionario
 dataOperacao
 montante
 obs
+Já!
 
 Ficha de Tipo de Operacoes:
 Id
 operacao
+Já!
 
 Ficha de Empresa:
 Id
@@ -68,5 +71,5 @@ Já!
 Ficha de Tipo de Empresa:
 Id
 Tipo (Fornecedor, Agencia, etc)
-Já
+Já!
 

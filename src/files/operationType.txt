@@ -1,0 +1,5 @@
+1#Saida#Inactivo
+2#Ulala#Activo
+3#Teste#Activo
+4#Entrada#Activo
+5#Venda#Activo

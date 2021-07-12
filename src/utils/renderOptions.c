@@ -183,7 +183,7 @@ void ComponentsOptions (int option, int crudOption) {
 		do {
 			getAll(option, crudOption, 1);
 			
-			res = CpTupdate();
+			res = CpUpdate();
 			
 			ans = getAnswerColor(res, updateComponents, globalNotFound);
 		} while(ans == 's' || ans == 'S');
@@ -193,7 +193,7 @@ void ComponentsOptions (int option, int crudOption) {
 		do {
 			getAll(option, crudOption, 1);
 			
-			res = CTdel();
+			res = Cpdel();
 			
 			ans = getAnswerColor(res, deleteComponents, globalNotFound);
 		} while(ans == 's' || ans == 'S');
@@ -202,7 +202,7 @@ void ComponentsOptions (int option, int crudOption) {
 	} else if (crudOption == 4) {
 		
 		getAll(option, crudOption, 1);
-		res = CpTgetComponents();
+		res = CpgetComponents();
 		
 		getAll(option, crudOption, 1);
 	} else if (crudOption == 5) {
@@ -376,6 +376,118 @@ void WorkPlaceOptions (int option, int crudOption) {
 			getAll(option, crudOption, 1);
 			
 			res = Fcsearch();
+			
+			ans = getNormalAnswer();
+		} while(ans == 's' || ans == 'S');
+		
+		getAll(option, crudOption, 1);
+	}
+}
+
+//
+
+void OperationTypeOptions (int option, int crudOption) {
+	int res;
+	char ans;
+	
+	if (crudOption == 1) {
+		do {
+			getAll(option, crudOption, 1);
+			
+			res = OpStore();
+			
+			ans = getAnswerColor(res, storeOperationType, errStore);
+		} while(ans == 's' || ans == 'S');
+		
+		getAll(option, crudOption, 1);
+	} else if (crudOption == 2) {
+		do {
+			getAll(option, crudOption, 1);
+			
+			res = OpUpdate();
+			//system("pause");
+			
+			ans = getAnswerColor(res, updateOperationType, globalNotFound);
+		} while(ans == 's' || ans == 'S');
+		
+		getAll(option, crudOption, 1);
+	} else if (crudOption == 3) {
+		do {
+			getAll(option, crudOption, 1);
+			
+			res = Opdel();
+			
+			ans = getAnswerColor(res, deleteOperationType, globalNotFound);
+		} while(ans == 's' || ans == 'S');
+		
+		getAll(option, crudOption, 1);
+	} else if (crudOption == 4) {
+		getAll(option, crudOption, 1);
+		
+		res = getOperationTypes();
+		
+		getAll(option, crudOption, 1);
+	} else if (crudOption == 5) {
+		do {
+			getAll(option, crudOption, 1);
+			
+			res = Opsearch();
+			
+			ans = getNormalAnswer();
+		} while(ans == 's' || ans == 'S');
+		
+		getAll(option, crudOption, 1);
+	}
+}
+
+//
+
+void OperationOptions (int option, int crudOption) {
+	int res;
+	char ans;
+	
+	if (crudOption == 1) {
+		do {
+			getAll(option, crudOption, 1);
+			
+			res = OptStore();
+			
+			ans = getAnswerColor(res, storeOperation, errStore);
+		} while(ans == 's' || ans == 'S');
+		
+		getAll(option, crudOption, 1);
+	} else if (crudOption == 2) {
+		do {
+			getAll(option, crudOption, 1);
+			
+			res = OptUpdate();
+			//system("pause");
+			
+			ans = getAnswerColor(res, updateOperation, globalNotFound);
+		} while(ans == 's' || ans == 'S');
+		
+		getAll(option, crudOption, 1);
+	} else if (crudOption == 3) {
+		do {
+			getAll(option, crudOption, 1);
+			
+			res = Optdel();
+			
+			ans = getAnswerColor(res, deleteOperation, globalNotFound);
+		} while(ans == 's' || ans == 'S');
+		
+		getAll(option, crudOption, 1);
+	} else if (crudOption == 4) {
+		getAll(option, crudOption, 1);
+		
+		res = OpgetComponents();
+		
+		getAll(option, crudOption, 1);
+	} else if (crudOption == 5) {
+		do {
+			getAll(option, crudOption, 1);
+			
+			res = Opsearch();
 			
 			ans = getNormalAnswer();
 		} while(ans == 's' || ans == 'S');

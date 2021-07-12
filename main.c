@@ -42,7 +42,7 @@
 #include "./src/forms/function/search.cpp"
 #include "./src/forms/function/update.cpp"
 
-//Importando Funções de Employe
+//Importando Funções de Employee
 #include "./src/forms/employe/index.c"
 #include "./src/forms/employe/store.c"
 #include "./src/forms/employe/delete.c"
@@ -62,6 +62,20 @@
 #include "./src/forms/components/delete.c"
 #include "./src/forms/components/search.cpp"
 #include "./src/forms/components/update.cpp"
+
+//Importando Funções de Operation Type
+#include "./src/forms/operationType/index.c"
+#include "./src/forms/operationType/store.c"
+#include "./src/forms/operationType/delete.c"
+#include "./src/forms/operationType/search.cpp"
+#include "./src/forms/operationType/update.cpp"
+
+//Importando Funções de Operation
+#include "./src/forms/operation/index.c"
+#include "./src/forms/operation/store.c"
+#include "./src/forms/operation/delete.c"
+/*#include "./src/forms/operationType/search.cpp"*/
+#include "./src/forms/operation/update.c"
 
 int main() {
 	setlocale(LC_ALL, "Portuguese");
@@ -112,6 +126,7 @@ int main() {
 					getAll(option, crudOption, 1);
 							
 					if (option == 1) {
+						//Lidando com o Componente
 						ComponentsOptions(option, crudOption);
 					} else if (option == 2) {
 						//Lidando com o Tipo Componente
@@ -125,6 +140,12 @@ int main() {
 					} else if (option == 5) {
 						//Lidando com a Função
 						FunctionOptions(option, crudOption);
+					} else if (option == 6) {
+						//Lidando com a Operação
+						OperationOptions(option, crudOption);
+					} else if (option == 7) {
+						//Lidando com o Tipo de Operação
+						OperationTypeOptions(option, crudOption);
 					} else if (option == 8) {
 						//Lidando com a Empresa
 						CompanyOptions(option, crudOption);

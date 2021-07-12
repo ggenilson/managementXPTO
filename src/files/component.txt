@@ -1,3 +1,5 @@
-1#Computador#12B12A#xûq#xûq#20>#2>#1>#Novo#1>#Componente totalmente novo#Activo
-2#Vela#12#xûq#xûq#20>#2>#1>#Bom#1>#Muito bom isso#Activo
-3#wsd#sd#xûq#xûq#20>#2>#1>#1#1>#1#Activo
+1#Computador Testado#20200859#01-01-2021#02-02-2022#1>#2>#2>#Esquentado#0>#Ainda esta novo#Activo
+2#PC#1267#12-05-2002#12-09-1987#2>#2>#1>#Genisbro#1>#Mauzao#Inactivo
+3#sdsd#sdsd#12-12-12#12-12-12#2>#1>#2>#1#1>#sd#Activo
+4#12#sd#12-02-1111#12-12-1212#2>#1>#2>#fdf#1>#df#Activo
+5#genilson#1#12-12-12#12-12-12#1>#2>#1>#Estragado#1>#Totalmente mal#Activo

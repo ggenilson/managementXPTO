@@ -40,4 +40,14 @@ char deleteComponents[] = "Componente 'ELIMINADO' com sucesso!";
 char updateComponents[] = "Componente 'ALTERADO' com sucesso!";
 char storeComponents[] = "Componente 'INSERIDO' com sucesso!";
 
+//Operaton Type
+char deleteOperationType[] = "Tipo de Operação 'ELIMINADA' com sucesso!";
+char updateOperationType[] = "Tipo de Operação 'ALTERADA' com sucesso!";
+char storeOperationType[] = "Tipo de Operação 'INSERIDA' com sucesso!";
+
+//Operaton
+char deleteOperation[] = "Operação 'ELIMINADA' com sucesso!";
+char updateOperation[] = "Operação 'ALTERADA' com sucesso!";
+char storeOperation[] = "Operação 'INSERIDA' com sucesso!";
+
 char errStore[] = "Erro inesperado!\nSugestão: Verifique o caminho do ficheiro!";

@@ -136,7 +136,7 @@ char getAnswerColor(int res, char * s1, char * s2) {
 	setbuf(stdin, NULL);
 	char ans;
 	
-	if (res) {
+	if (res == 1) {
 		textcolor(BLUE);
 		printf("\n%s\n", s1);
 	} else {
@@ -146,7 +146,7 @@ char getAnswerColor(int res, char * s1, char * s2) {
 	
 	textcolor(GREEN);
 	
-	printf("\nPretende executar a acção mais uma vez?\n(s/n)\n");
+	printf("\nPretende executar esta acção mais uma vez?\n(s/n)\n");
 	scanf(" %c", &ans);
 	setbuf(stdin, NULL);
 	
@@ -195,7 +195,6 @@ void auxGetEntityFK (FILE *fr, char title[], int aux, int otherField, int fieldS
 			
 			while(subFK) {
 				subFK = strtok(NULL, "#");
-				
 				if (k1 == otherField) {
 					if (subFK) {
 						if (helper) textcolor(RED);
@@ -210,6 +209,8 @@ void auxGetEntityFK (FILE *fr, char title[], int aux, int otherField, int fieldS
 		
 		memset(lFK, 0, sizeof(char) * 1001);
 	}
+	
+	fclose(fr);
 }
 
 int getEntityFK (char *fields[], char *fileReader, int fieldSize, char *fks[], int fksFieldsShow[], int endLineFK[]) {
@@ -225,11 +226,13 @@ int getEntityFK (char *fields[], char *fileReader, int fieldSize, char *fks[], i
 	}
     
     //Uma string larga o suficiente para extrair o texto total de cada linha
-    char lineText[1001] = "";
+    char lineText[1001] = "", copy[1001] = "", copy1[1001] = "";
     char *found, *aux;
     int index, startFK, ver1;
     
     while(fgets(lineText, 1001, input)) {
+    	strcpy(copy, lineText);
+    	strcpy(copy1, lineText);
     	ver1 = strstr(lineText, "Activo\n") - lineText;
     	
     	if (ver1 > -1) {
@@ -247,6 +250,7 @@ int getEntityFK (char *fields[], char *fileReader, int fieldSize, char *fks[], i
 		    	if (sub) {
 		    		//Verificando se existe chave secundária
 		    		if (strchr(sub, '>') - sub > -1) {
+		    			strcpy(copy, copy1);
 		    			found = strchr(sub, '>');
 						index = found ? found - sub : -1;
 		    			aux = substring(sub, 0, index);
@@ -254,8 +258,15 @@ int getEntityFK (char *fields[], char *fileReader, int fieldSize, char *fks[], i
 		    			
 		    			auxGetEntityFK(inp, fields[k], atoi(aux), fksFieldsShow[startFK], endLineFK[startFK]);
 		    			startFK++;
+		    			
+		    			//Limpando STRING
+		    			int a;
+		    			sub = strtok(copy, "#");
+		    			for (a = 0;  a < k; a++) {
+		    				sub = strtok(NULL, "#");
+						}
 					} else {
-						if (k < fieldSize - 1) {
+						if (k < fieldSize) {
 		    				printf("|%s\t\t%s\n", fields[k], sub);
 						} else {
 							printf("|%s\t\t%s", fields[k], sub);
@@ -265,8 +276,7 @@ int getEntityFK (char *fields[], char *fileReader, int fieldSize, char *fks[], i
 		    		k++;
 				}
 			}
-			
-			fclose(inp);
+		
 			cont++;	
 		}
 		
@@ -372,7 +382,7 @@ int getEntitySearch (char *fields[], char *fileReader, int fieldSize, int fields
     
     //Uma string larga o suficiente para extrair o texto total de cada linha
     char lineText[1001] = "";
-    int index, ver,ver1, all;
+    int index, ver, ver1, all;
     
     strlwr(val);
     
@@ -518,6 +528,122 @@ int removeField (char *path, int id, int length) {
 				}
 				
 				ret = 1;
+			} else {
+				fputs(copy, output);
+			}
+		}
+        
+        memset(lineText, 0, sizeof(char) * 1001);
+    }
+    
+    fclose(input);
+    fclose(output);
+    
+    remove(path);
+    rename("helpful.txt", path);
+    
+    return ret;
+}
+
+int removeFieldFK (char *path, int id, int length, char *pathsJoin[], int pathsJoinSize, char *errors[]) {
+	//Arquivo de entrada
+	FILE *input = fopen(path, "r");
+	
+	//Arquivo de saída
+    FILE *output = fopen("helpful.txt", "w+");
+    
+    if (!input || !output) {
+    	return 5;
+	}
+    
+    //Uma string larga o suficiente para extrair o texto total de cada linha
+    char lineText[1001] = "", copy[1001] = "", copy1[1001] = "";
+    
+    int index, idCompare, ret = 0, helper;
+	char * aux, * found, *sub, k;
+	
+    while(fgets(lineText, 1001, input)) {
+    	strcpy(copy, lineText);
+    	strcpy(copy1, lineText);
+    	sub = strtok(lineText, "#");
+    	
+    	helper = 0;
+    	k = 0;
+	    
+	    while (sub) {
+	    	sub = strtok(NULL, "#");
+	    	
+	    	if (sub) {
+	    		k++;
+				
+				if (k == length) {
+					if (strcmp(sub, "Activo\n") == 0) {
+						helper = 1;
+					} else {
+						fputs(copy, output);
+					}
+				}
+			}
+		}
+		
+		if (helper) {
+			sub = strtok(copy1, "#");
+			
+			if (id == atoi(sub)) {
+				int z, verifyId = 0;
+				
+				for (z = 0; z < pathsJoinSize; z++) {
+					FILE *file = fopen(pathsJoin[z], "r");
+					char strFile[1001];
+					int ver, ver1;
+					
+					while (fgets(strFile, 1001, file)) {
+						ver = strstr(strFile, "Activo\n") - strFile;
+						char auxStr[5] = "";
+						
+						strcat(auxStr, sub);
+						strcat(auxStr, ">");
+						
+						if (ver > -1) {
+							ver1 = strstr(strFile, auxStr) - strFile;
+							
+							if (ver1 > -1) {
+								verifyId = 1;
+								textcolor(RED);
+								printf("\nErro: Existe uma relação entre esta entidade e '%s'!\n", errors[z]);
+								textcolor(GREEN);
+								break;
+							}
+						}
+					}
+					
+					if (verifyId) break;
+					
+					fclose(file);
+				}
+				
+				if (!verifyId) {
+					fprintf(output, "%d#", id);
+					k = 0;
+					
+					while(sub) {
+						sub = strtok(NULL, "#");
+						if (sub) {
+							k++;
+					
+							if (k == length) {
+								fprintf(output, "Inactivo\n");
+							} else {
+								fprintf(output, "%s#", sub);
+							}
+						}
+					}
+					
+					ret = 1;
+				} else {
+					fputs(copy, output);
+					ret = 89;
+				}
 			} else {
 				fputs(copy, output);
 			}
@@ -725,9 +851,10 @@ int getFK1 (char *path, int valuesToGet[], int sizeValuesToGet, int idSearch, in
     return val;
 }
 
-char *getDate (char *sms) {
+/*char *getDate (char *sms) {
 	char day[4] = "", month[4] = "", year[10] = "", r[20] = "";
 	char *newVal[20];
+	setbuf(stdin, NULL);
 	
 	do {
 		printf("%s\n", sms);
@@ -757,10 +884,8 @@ char *getDate (char *sms) {
 	strcat(r, year);
 	strcpy(newVal, r);
 	
-	printf("New = %s\n", r);
-	printf("New Val = %s\n", newVal);
 	
 	return newVal;
-}
+}*/
 
 
