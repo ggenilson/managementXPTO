@@ -19,6 +19,14 @@ char *fieldsCompanyToEdit[] = {
 	"3 - ESTADO"
 };
 
+char *fieldsCompany[] = {
+	"1 - ID",
+	"2 - NOME",
+	"3 - TIPO",
+	"4 - ESTADO",
+	"5 - TODOS"
+};
+
 //////////////
 char *fieldsComponentType[] = {
 	"1 - ID",

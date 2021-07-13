@@ -6,6 +6,7 @@ int CTdel () {
 	
 	char *pathsJoin[] = { pathCompany };
 	char *error[] = { "Empresa" };
+	int pos[] = { 2 };
 	
-	return removeFieldFK(pathCompanyType, id, 2, pathsJoin, 1, error);
+	return removeFieldFK(pathCompanyType, id, 2, pathsJoin, 1, error, pos);
 }

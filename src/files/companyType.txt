@@ -1,4 +1,4 @@
 1#Fabricante#Activo
-2#Fornecedor#Inactivo
-3#Outro#Inactivo
+2#Fornecedor#Activo
+3#Outro#Activo
 4#Kuenda#Activo

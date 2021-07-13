@@ -1,28 +1,28 @@
-/*int fieldsSearchCompanyType[4];
+int fieldsSearchCompany[4];
 int nFields;
-char searchCompanyType[100];
+char searchCompany[100];
 
-void getTypesSearchCT () {
+void getTypesSearchC () {
 	int i, j;
 	
-	for (i = 0; i < 4; i++) {
-		printf("%s\n", fieldsCompanyType[i]);
+	for (i = 0; i < 5; i++) {
+		printf("%s\n", fieldsCompany[i]);
 	}
 	
 	printf("\nPor quantos campos quer pesquisar?\n");
 	scanf("%d", &nFields);
 	setbuf(stdin, NULL);
 	
-	if (nFields <= 4 && nFields >= 1) {
+	if (nFields <= 5 && nFields >= 1) {
 		for (j = 0; j < nFields; j++) {
 			printf("%dº campo: ", j + 1);
-			scanf("%d", &fieldsSearchCompanyType[j]);
-			fieldsSearchCompanyType[j] = fieldsSearchCompanyType[j] - 1;
+			scanf("%d", &fieldsSearchCompany[j]);
+			fieldsSearchCompany[j] = fieldsSearchCompany[j] - 1;
 			setbuf(stdin, NULL);
 		}
 		
 		printf("\nPesquisa: ");
-		gets(searchCompanyType);
+		gets(searchCompany);
 		setbuf(stdin, NULL);
 		
 		printf("\n\nResultado encontrado:\n");
@@ -31,10 +31,10 @@ void getTypesSearchCT () {
 	}
 }
 
-int CTsearch () {
-	char * fields[] = { "ID", "TIPO", "ESTADO" };
+int Csearch () {
+	char * fields[] = { "ID", "NOME", "TIPO", "ESTADO" };
 	
-	getTypesSearchCT();
+	getTypesSearchC();
 	
-	return getEntitySearch(fields, pathCompanyType, 3, fieldsSearchCompanyType, nFields, searchCompanyType);
-}*/
+	return getEntitySearch(fields, pathCompany, 3, fieldsSearchCompany, nFields, searchCompany);
+}

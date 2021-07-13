@@ -4,5 +4,9 @@ int CpTdel () {
 	printf("Especifique o código do Tipo do Componente, para assim eliminar:\n");
 	scanf("%d", &id);
 	
-	return removeField(pathComponentType, id, 2);
+	char *pathsJoin[] = { pathComponent };
+	char *error[] = { "Componente" };
+	int pos[] = { 7 };
+	
+	return removeFieldFK(pathComponentType, id, 2, pathsJoin, 1, error, pos);
 }

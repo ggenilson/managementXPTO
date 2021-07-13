@@ -4,5 +4,9 @@ int Fcdel () {
 	printf("Especifique o código da Função, para assim eliminar:\n");
 	scanf("%d", &id);
 	
-	return removeField(pathFunction, id, 2);
+	char *pathsJoin[] = { pathEmploye };
+	char *error[] = { "Funcionário" };
+	int pos[] = { 2 };
+	
+	return removeFieldFK(pathFunction, id, 2, pathsJoin, 1, error, pos);
 }

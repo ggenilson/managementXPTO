@@ -4,5 +4,5 @@ int CgetCompany () {
 	int fksFieldsShow[] = { 1 };
 	int endLineFK[] = { 2 };
 	
-	return getEntityFK(fields, pathCompany, 4, fks, fksFieldsShow, endLineFK);
+	return getEntityFK(fields, pathCompany, 3, fks, fksFieldsShow, endLineFK);
 }

@@ -139,7 +139,7 @@ char getAnswerColor(int res, char * s1, char * s2) {
 	if (res == 1) {
 		textcolor(BLUE);
 		printf("\n%s\n", s1);
-	} else {
+	} else if (res == 0) {
 		textcolor(RED);
 		printf("\n%s\n", s2);
 	}
@@ -545,7 +545,7 @@ int removeField (char *path, int id, int length) {
     return ret;
 }
 
-int removeFieldFK (char *path, int id, int length, char *pathsJoin[], int pathsJoinSize, char *errors[]) {
+int removeFieldFK (char *path, int id, int length, char *pathsJoin[], int pathsJoinSize, char *errors[], int pos[]) {
 	//Arquivo de entrada
 	FILE *input = fopen(path, "r");
 	
@@ -599,27 +599,41 @@ int removeFieldFK (char *path, int id, int length, char *pathsJoin[], int pathsJ
 					
 					while (fgets(strFile, 1001, file)) {
 						ver = strstr(strFile, "Activo\n") - strFile;
-						char auxStr[5] = "";
+						char auxStr[5] = "", *splited;
 						
 						strcat(auxStr, sub);
 						strcat(auxStr, ">");
 						
 						if (ver > -1) {
-							ver1 = strstr(strFile, auxStr) - strFile;
+							int auxCount = 0;
+							splited = strtok(strFile, "#");
+							
+							while (splited) {
+								splited = strtok(NULL, "#");
+								auxCount++;
+								
+								if (splited) {
+									if (auxCount == pos[z]) {
+										ver1 = strstr(splited, auxStr) - splited;
+										break;
+									}
+								}
+							}
+							
 							
 							if (ver1 > -1) {
 								verifyId = 1;
 								textcolor(RED);
-								printf("\nErro: Existe uma relação entre esta entidade e '%s'!\n", errors[z]);
+								printf("\nErro: Existe uma relação entre este registro e '%s'!\n", errors[z]);
 								textcolor(GREEN);
 								break;
 							}
 						}
 					}
 					
-					if (verifyId) break;
-					
 					fclose(file);
+					
+					if (verifyId) break;
 				}
 				
 				if (!verifyId) {

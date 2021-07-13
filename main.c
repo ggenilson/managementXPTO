@@ -108,6 +108,7 @@ int main() {
 		} else {
 			do {
 				//Chamando o menu para o CRUD (Inserir, Atualizar, Ler e Apagar)
+				system("cls");
 				getAll(option, crudOption, 0);
 				getNewLine(1);
 				renderCrudOptions();

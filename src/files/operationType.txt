@@ -1,5 +1,7 @@
 1#Saida#Inactivo
-2#Ulala#Activo
-3#Teste#Activo
-4#Entrada#Activo
-5#Venda#Activo
+2#12-02-2020#Inactivo
+12-05-2005#3>#12-05-20019#120929#Operacao concluida#Activo
+#3#Teste#Activo
+4#12-02-2020#Inactivo
+12-05-2005#3>#12-05-20019#120929#Operacao concluida#Activo
+#5#Venda#Activo
