@@ -865,41 +865,190 @@ int getFK1 (char *path, int valuesToGet[], int sizeValuesToGet, int idSearch, in
     return val;
 }
 
-/*char *getDate (char *sms) {
-	char day[4] = "", month[4] = "", year[10] = "", r[20] = "";
-	char *newVal[20];
-	setbuf(stdin, NULL);
+int getEntityFKSearch (char *fields[], char *fileReader, int fieldSize, char *fks[], int fksFieldsShow[], int endLineFK[], int fieldsToSearch[], int sizeFields, char val[]) {
+	char *sub, *sub1;
+	int i, cont = 0, k;
 	
-	do {
-		printf("%s\n", sms);
-		printf("\tDia: ");
-		scanf("%s", day);
-		setbuf(stdin, NULL);
+	//Arquivo de entrada
+	FILE *input = fopen(fileReader, "r");
+	FILE *inp;
+    
+    if (!input) {
+    	return 0;
+	}
+	
+	sort(fieldsToSearch, sizeFields);
+    
+    //Uma string larga o suficiente para extrair o texto total de cada linha
+    char lineText[1001] = "", copy[1001] = "", copy1[1001] = "", copy2[1001] = "", cp[1001] = "";
+    char *found, *aux;
+    int index, startFK, ver, ver1;
+    int index1, all, helper;
+    
+    strlwr(val);
+    
+    while(fgets(lineText, 1001, input)) {
+    	strcpy(copy, lineText);
+    	strcpy(copy1, lineText);
+    	ver1 = strstr(lineText, "Activo\n") - lineText;
+    	
+    	if (ver1 > -1) {
+    		strcpy(copy2, lineText);
+	    	strlwr(copy2);
+		    sub1 = strtok(copy2, "#");
+		    k = 0;
+		    all = 0;
+		    helper = 0;
+		    startFK = 0;
+		    
+		    index1 = contains(fieldsToSearch, k, sizeFields);
+			all = contains(fieldsToSearch, fieldSize + 1, sizeFields);
+			
+			if (index1 != -1 || all != -1) {
+				ver = strstr(sub1, val) - sub1;
+		    
+			    if (ver > -1) {
+			    	helper = 1;
+			    }
+			}
 		
-		printf("\tMês: ");
-		scanf("%s", month);
-		setbuf(stdin, NULL);
-		
-		printf("\tAno: ");
-		scanf("%s", year);
-		setbuf(stdin, NULL);
-		
-		if (atoi(day) < 1 || atoi(day) > 31 || atoi(month) < 1 || atoi(month) > 12 || atoi(year) < 1) {
-			textcolor(RED);
-			printf("Problema com os dados de entrada, verifique a data digitada!\n\n");
-			textcolor(GREEN);
+			k++;
+	    
+		    while (sub1) {
+		    	sub1 = strtok(NULL, "#");
+		    	
+		    	if (sub1 && k != 0) {
+		    		index1 = contains(fieldsToSearch, k, sizeFields);
+		    		
+		    		if (index1 != -1 || all != -1) {
+		    			if (strchr(sub1, '>') - sub1 > -1) {
+		    				strcpy(copy, copy1);
+			    			found = strchr(sub, '>');
+							index = found ? found - sub : -1;
+			    			aux = substring(sub, 0, index);
+			    			inp = fopen(fks[startFK], "r");
+			    			
+			    			printf("ID: %s\n", aux);
+			    			
+			    			helper = auxGetEntityFKSearch(inp, fields[k], atoi(aux), fksFieldsShow[startFK], endLineFK[startFK], val);
+			    			printf("Helper: %s", helper);
+			    			
+			    			//Limpando STRING
+			    			int a;
+			    			sub = strtok(copy, "#");
+			    			for (a = 0;  a < k; a++) {
+			    				sub = strtok(NULL, "#");
+							}
+							
+			    			if (helper) break;
+			    			
+			    			startFK++;
+						} else {
+							ver = strstr(sub1, val) - sub1;
+		    
+						    if (ver > -1) {
+						    	helper = 1;
+						    	break;
+						    }
+						}
+					}
+					
+		    		k++;
+				}
+			}
+			
+			if (helper) {
+				sub = strtok(lineText, "#");
+			    k = 1;
+			    startFK = 0;
+			    
+			    printf("-----------------------------------------------\n");
+		    
+			    printf("|%s\t\t%s\n", fields[0], sub);
+			    
+			    while (sub) {
+			    	startFK = 0;
+			    	sub = strtok(NULL, "#");
+			    	
+			    	if (sub) {
+			    		//Verificando se existe chave secundária
+			    		if (strchr(sub, '>') - sub > -1) {
+			    			strcpy(copy, copy1);
+			    			found = strchr(sub, '>');
+							index = found ? found - sub : -1;
+			    			aux = substring(sub, 0, index);
+			    			inp = fopen(fks[startFK], "r");
+			    			
+			    			auxGetEntityFK(inp, fields[k], atoi(aux), fksFieldsShow[startFK], endLineFK[startFK]);
+			    			startFK++;
+			    			
+			    			//Limpando STRING
+			    			int a;
+			    			sub = strtok(copy, "#");
+			    			for (a = 0;  a < k; a++) {
+			    				sub = strtok(NULL, "#");
+							}
+						} else {
+							if (k < fieldSize) {
+			    				printf("|%s\t\t%s\n", fields[k], sub);
+							} else {
+								printf("|%s\t\t%s", fields[k], sub);
+							}
+						}
+						
+			    		k++;
+					}
+				}
+				
+				cont++;	
+			}
 		}
-	} while(atoi(day) < 1 || atoi(day) > 31 || atoi(month) < 1 || atoi(month) > 12 || atoi(year) < 1);
+		
+		memset(lineText, 0, sizeof(char) * 1001);
+    }
+    
+    fclose(input);
+    
+    printf(cont == 0 ? "Tabela não possui algum dado ...\n" : "-----------------------------------------------\n");
+    
+    system("pause");
 	
-	strcat(r, day);
-	strcat(r, "-");
-	strcat(r, month);
-	strcat(r, "-");
-	strcat(r, year);
-	strcpy(newVal, r);
+	return 1;
+}
+
+int auxGetEntityFKSearch (FILE *fr, char title[], int aux, int otherField, int fieldSize, char val[]) {
+	char lFK[1001] = "", copy[1001] = ""; 
+	char *subFK;
+	int k1, helper = 0;
 	
+	while(fgets(lFK, 1001, fr)) {
+		strcpy(copy, lFK);
+		subFK = strtok(lFK, "#");
+		
+		if (aux == atoi(subFK)) {
+			k1 = 1;
+			subFK = strtok(copy, "#");
+			
+			while(subFK) {
+				subFK = strtok(NULL, "#");
+				if (k1 == otherField) {
+					if (subFK && strstr(subFK, val) - subFK > -1) {
+						helper = 1;
+					}
+					
+					break;
+				}
+			}
+		}
+		
+		memset(lFK, 0, sizeof(char) * 1001);
+	}
 	
-	return newVal;
-}*/
+	fclose(fr);
+	
+	printf("Teste: %s\n", helper);
+	
+	return helper;
+}
 
 

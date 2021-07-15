@@ -319,7 +319,7 @@ void EmployeOptions (int option, int crudOption) {
 		do {
 			getAll(option, crudOption, 1);
 			
-			res = Fcsearch();
+			res = Esearch();
 			
 			ans = getNormalAnswer();
 		} while(ans == 's' || ans == 'S');

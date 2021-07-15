@@ -1,8 +1,8 @@
-/*int fieldsSearchCompanyType[4];
+int fieldsSearchEmployee[4];
 int nFields;
-char searchCompanyType[100];
+char searchEmployee[100];
 
-void getTypesSearchCT () {
+void getTypesSearchE () {
 	int i, j;
 	
 	for (i = 0; i < 4; i++) {
@@ -31,10 +31,10 @@ void getTypesSearchCT () {
 	}
 }
 
-int CTsearch () {
+int Esearch () {
 	char * fields[] = { "ID", "TIPO", "ESTADO" };
 	
-	getTypesSearchCT();
+	getTypesSearchE();
 	
 	return getEntitySearch(fields, pathCompanyType, 3, fieldsSearchCompanyType, nFields, searchCompanyType);
-}*/
+}

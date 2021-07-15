@@ -1,4 +1,4 @@
-int fieldsSearchCompany[4];
+int fieldsSearchCompany[5];
 int nFields;
 char searchCompany[100];
 
@@ -25,7 +25,7 @@ void getTypesSearchC () {
 		gets(searchCompany);
 		setbuf(stdin, NULL);
 		
-		printf("\n\nResultado encontrado:\n");
+		printf("\nResultado encontrado:\n");
 	} else {
 		printf("Valor inválido!\n");
 	}
@@ -36,5 +36,9 @@ int Csearch () {
 	
 	getTypesSearchC();
 	
-	return getEntitySearch(fields, pathCompany, 3, fieldsSearchCompany, nFields, searchCompany);
+	char *fks[] = { pathCompanyType };
+	int fksFieldsShow[] = { 1 };
+	int endLineFK[] = { 2 };
+	
+	return getEntityFKSearch(fields, pathCompany, 3, fks, fksFieldsShow, endLineFK, fieldsSearchCompany, nFields, searchCompany);
 }
